@@ -1,5 +1,5 @@
 # Girls' Day 2019 @codecentric MUC
-28.03.2019
+![](assets/Girls-day-2019.png)
 
 ## Mini projekt - Dungeon Crawler
 

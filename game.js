@@ -1,53 +1,5 @@
 function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
 
-var Button = React.createClass({ displayName: "Button",
-    action: function action() {
-        toggleShadow();
-    },
-    render: function render() {
-        return React.createElement("button", { className: this.props.class, onClick: this.action }, this.props.text);
-    } });
-
-
-var Map = React.createClass({ displayName: "Map",
-    render: function render() {
-        return (
-            React.createElement("canvas", { id: "grid", width: "801px", height: "601px" }));
-
-    } });
-
-
-var Legend = React.createClass({ displayName: "Legend",
-    render: function render() {
-        return (
-            React.createElement("div", null,
-                React.createElement("div", null, React.createElement("h2", null,
-                    React.createElement("b", null, "XP"), ": ", React.createElement("span", { id: "xp" }, "0"), "- ",
-                    React.createElement("b", null, "Level"), ": ", React.createElement("span", { id: "level" }, "0"), "- ",
-                    React.createElement("b", null, "Health"), ": ", React.createElement("span", { id: "health" }, "0"), "- ",
-                    React.createElement("b", null, "Weapon"), ": ", React.createElement("span", { id: "weapon" }, "0"), "- ",
-                    React.createElement("b", null, "Damage"), ": ", React.createElement("span", { id: "damage" }, "0"))),
-                React.createElement("h3", null, "Enemies left: ", React.createElement("span", { id: "enemies" }, "0"))));
-
-    } });
-
-
-var View = React.createClass({ displayName: "View",
-    render: function render() {
-        return (
-            React.createElement("div", null,
-                React.createElement(Legend, null),
-                React.createElement(Map, null),
-                React.createElement(Button, { "class": "btn btn-success", text: "Toggle Shadow" })));
-
-
-    } });
-
-
-ReactDOM.render(React.createElement(View, null),
-    document.getElementById('container'));
-
-
 // create board
 var map = [];
 var rooms = 0;
