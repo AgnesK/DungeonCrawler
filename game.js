@@ -2,36 +2,17 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
 
 // create board
 var map = [];
-var rooms = 0;
 var shadow = []; //show only a part of map
 var VISIBILITY = 3;
-var MAX_ROOM_SIZE = 15;
-var MIN_ROOM_SIZE = 4;
-var MAX_ROOM_DISTANCE = 4;
-var MIN_ROOM_DISTANCE = 2;
 var COLS = 80;
 var ROWS = 60;
 var canvas = document.getElementById("grid");
 var context = canvas.getContext("2d");
 var busyCoordinates = [];
-var player;
-var weapon;
 var isShadowToggled = true;
 var directions = [-1, 0, 1];
 var MAX_ERRORS_COUNT = 1000;
 var MINIMUM_TILES_AMOUNT = 1000;
-
-var Player =
-        function Player(level, health, weapon, coords, xp) {_classCallCheck(this, Player);
-            this.level = level;
-            this.health = health;
-            this.weapon = weapon;
-            this.coords = coords;
-            this.xp = xp;
-        };
-
-
-
 
 startGame();
 
@@ -195,14 +176,6 @@ function generateValidCoords() {
 
 }
 
-
-
-function generatePlayer() {
-    var coords = generateValidCoords();
-    player = new Player(1, 100, WEAPONS[0], coords, 30);
-    addObjToMap(player.coords, 2);
-}
-
 // add given coords to map
 // make the coords and neighbors busy
 // and draw object with given color
@@ -280,35 +253,6 @@ function gameOver() {
 function removeObjFromMap(x, y) {
     map[y][x] = 1;
 };
-
-function updatePlayerPosition(oldX, oldY, newX, newY) {
-    removeObjFromMap(oldX, oldY);
-    map[newY][newX] = 2;
-    player.coords = { x: newX, y: newY };
-
-    var startX = oldX - VISIBILITY < 0 ? 0 : oldX - VISIBILITY;
-    var startY = oldY - VISIBILITY < 0 ? 0 : oldY - VISIBILITY;
-    var endX = newX + VISIBILITY >= COLS ? COLS - 1 : newX + VISIBILITY;
-    var endY = newY + VISIBILITY >= ROWS ? ROWS - 1 : newY + VISIBILITY;
-
-    if (oldX > newX) {
-        startX = newX - VISIBILITY;
-        endX = oldX + VISIBILITY;
-    }
-    if (oldY > newY) {
-        startY = newY - VISIBILITY;
-        endY = oldY + VISIBILITY;
-    }
-    for (var row = startY; row <= endY; row++) {
-        for (var col = startX; col <= endX; col++) {
-            if (row >= newY - VISIBILITY && row <= newY + VISIBILITY && col >= newX - VISIBILITY && col <= newX + VISIBILITY) {
-                shadow[row][col] = 1;
-            } else {
-                shadow[row][col] = 0;
-            }
-        }
-    }
-}
 
 function toggleShadow() {
     isShadowToggled = !isShadowToggled;
