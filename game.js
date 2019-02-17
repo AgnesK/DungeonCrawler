@@ -16,7 +16,6 @@ var WEAPONS = [{
         name: "Atomic Bomb",
         damage: 100 }];
 
-var POTIONS = [10, 20, 30, 40, 50];
 var ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
 var ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 var shadow = []; //show only a part of map
@@ -29,7 +28,6 @@ var COLS = 80;
 var ROWS = 60;
 var TOTAL_ENEMIES = 10;
 var STARTING_ENEMIES_AMOUNT = 4;
-var STARTING_POTIONS_AMOUNT = 4;
 var STARTING_WEAPONS_AMOUNT = 3;
 var defeatedEnemies = 0;
 var enemies = [];
@@ -144,16 +142,6 @@ function generateShadow() {
     }
 }
 
-function generatePotions(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
-        addObjToMap(coords, 4);
-        if (!isShadowToggled) {
-            drawObject(coords.x, coords.y, "green");
-        }
-    }
-}
-
 function generateWeapon(amount) {
     for (var i = 0; i < amount; i++) {
         var coords = generateValidCoords();
@@ -190,7 +178,7 @@ function drawMap(startX, startY, endX, endY) {
                     case 3:
                         color = "red";
                         break;
-                    case 4:
+                    case "potion":
                         color = "green";
                         break;
                     case 5:
@@ -300,10 +288,8 @@ document.addEventListener("keydown", function (e) {
         })[0]);
     } else if (map[y][x] != 0) {
         // if next spot is potion
-        if (map[y][x] == 4) {
-            player.health += POTIONS[Math.floor(Math.random() * POTIONS.length)];
-            removeObjFromMap(x, y);
-            generatePotions(1);
+        if (map[y][x] == "potion") {
+            drinkPotion(x, y);
         } else if (map[y][x] == 5) {
             player.weapon = WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
             removeObjFromMap(x, y);
