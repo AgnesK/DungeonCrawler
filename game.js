@@ -3,8 +3,6 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
 // create board
 var map = [];
 var rooms = 0;
-var ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
-var ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 var shadow = []; //show only a part of map
 var VISIBILITY = 3;
 var MAX_ROOM_SIZE = 15;
@@ -13,10 +11,6 @@ var MAX_ROOM_DISTANCE = 4;
 var MIN_ROOM_DISTANCE = 2;
 var COLS = 80;
 var ROWS = 60;
-var TOTAL_ENEMIES = 10;
-var STARTING_ENEMIES_AMOUNT = 4;
-var defeatedEnemies = 0;
-var enemies = [];
 var canvas = document.getElementById("grid");
 var context = canvas.getContext("2d");
 var busyCoordinates = [];
@@ -25,23 +19,18 @@ var weapon;
 var isShadowToggled = true;
 var directions = [-1, 0, 1];
 var MAX_ERRORS_COUNT = 1000;
-var MINIMUM_TILES_AMOUNT = 1000;var
-    Player =
+var MINIMUM_TILES_AMOUNT = 1000;
+
+var Player =
         function Player(level, health, weapon, coords, xp) {_classCallCheck(this, Player);
             this.level = level;
             this.health = health;
             this.weapon = weapon;
             this.coords = coords;
             this.xp = xp;
-        };var
-
-
-    Enemy =
-        function Enemy(health, coords, damage) {_classCallCheck(this, Enemy);
-            this.health = health;
-            this.coords = coords;
-            this.damage = damage;
         };
+
+
 
 
 startGame();
@@ -151,7 +140,7 @@ function drawMap(startX, startY, endX, endY) {
                     case 2:
                         color = "blue";
                         break;
-                    case 3:
+                    case "enemy":
                         color = "red";
                         break;
                     case "potion":
@@ -206,13 +195,7 @@ function generateValidCoords() {
 
 }
 
-function generateEnemies(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
-        enemies.push(new Enemy(ENEMIES_HEALTH[Math.floor(Math.random() * ENEMIES_HEALTH.length)], coords, ENEMIES_DAMAGE[Math.floor(Math.random() * ENEMIES_DAMAGE.length)]));
-        addObjToMap(coords, 3);
-    }
-}
+
 
 function generatePlayer() {
     var coords = generateValidCoords();
@@ -258,15 +241,13 @@ document.addEventListener("keydown", function (e) {
             return; // exit this handler for other keys
     }
     // check if next spot is enemy
-    if (map[y][x] == 3) {
-        fightEnemy(enemies.filter(function (item) {
-            return item.coords.x == x && item.coords.y == y;
-        })[0]);
-    } else if (map[y][x] != 0) {
+    if (map[y][x] === "enemy") {
+        fightEnemy(x, y);
+    } else if (map[y][x] !== 0) {
         // if next spot is potion
-        if (map[y][x] == "potion") {
+        if (map[y][x] === "potion") {
             drinkPotion(x, y);
-        } else if (map[y][x] == "weapon") {
+        } else if (map[y][x] === "weapon") {
             takeWeapon(x, y);
         }
         updatePlayerPosition(player.coords.x, player.coords.y, x, y);
@@ -275,34 +256,6 @@ document.addEventListener("keydown", function (e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
-
-function fightEnemy(enemy) {
-    if (player.health - enemy.damage <= 0) {
-        gameOver();
-        return;
-    } else if (enemy.health - player.weapon.damage <= 0) {
-        enemyDefeated(enemy);
-    }
-    enemy.health -= player.weapon.damage;
-    player.health -= enemy.damage;
-    updateLegend();
-}
-
-function enemyDefeated(enemy) {
-    defeatedEnemies++;
-    if (defeatedEnemies == 10) {
-        userWins();
-        return;
-    }
-    removeObjFromMap(enemy.coords.x, enemy.coords.y);
-    drawMap(enemy.coords.x - 1, enemy.coords.y - 1, enemy.coords.x + 1, enemy.coords.y + 1);
-    enemies.slice(enemies.indexOf(enemy), 1);
-    player.xp += 50;
-    if (player.xp - 100 * (player.level - 1) >= 100) {
-        player.level++;
-    }
-    updateLegend();
-}
 
 function resetGame() {
     defeatedEnemies = [];
