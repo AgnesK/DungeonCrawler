@@ -76,7 +76,7 @@ function drawMap(startX, startY, endX, endY) {
                     case 1:
                         color = "white";
                         break;
-                    case 2:
+                    case "player":
                         color = "blue";
                         break;
                     case "enemy":
