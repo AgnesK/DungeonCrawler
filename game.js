@@ -3,19 +3,6 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
 // create board
 var map = [];
 var rooms = 0;
-var WEAPONS = [{
-    name: "Knife",
-    damage: 15 },
-    {
-        name: "Gun",
-        damage: 30 },
-    {
-        name: "Bazooka",
-        damage: 60 },
-    {
-        name: "Atomic Bomb",
-        damage: 100 }];
-
 var ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
 var ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 var shadow = []; //show only a part of map
@@ -28,7 +15,6 @@ var COLS = 80;
 var ROWS = 60;
 var TOTAL_ENEMIES = 10;
 var STARTING_ENEMIES_AMOUNT = 4;
-var STARTING_WEAPONS_AMOUNT = 3;
 var defeatedEnemies = 0;
 var enemies = [];
 var canvas = document.getElementById("grid");
@@ -142,16 +128,6 @@ function generateShadow() {
     }
 }
 
-function generateWeapon(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
-        addObjToMap(coords, 5);
-        if (!isShadowToggled) {
-            drawObject(coords.x, coords.y, "orange");
-        }
-    }
-}
-
 function updateLegend() {
     document.getElementById("xp").innerText = player.xp;
     document.getElementById("level").innerText = player.level;
@@ -181,7 +157,7 @@ function drawMap(startX, startY, endX, endY) {
                     case "potion":
                         color = "green";
                         break;
-                    case 5:
+                    case "weapon":
                         color = "orange";
                         break;
                     default:
@@ -290,10 +266,8 @@ document.addEventListener("keydown", function (e) {
         // if next spot is potion
         if (map[y][x] == "potion") {
             drinkPotion(x, y);
-        } else if (map[y][x] == 5) {
-            player.weapon = WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
-            removeObjFromMap(x, y);
-            generateWeapon(1);
+        } else if (map[y][x] == "weapon") {
+            takeWeapon(x, y);
         }
         updatePlayerPosition(player.coords.x, player.coords.y, x, y);
         updateLegend();
