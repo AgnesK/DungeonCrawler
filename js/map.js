@@ -1,34 +1,18 @@
-function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
-
-// create board
-var map = [];
-var shadow = []; //show only a part of map
-var VISIBILITY = 3;
-var COLS = 80;
-var ROWS = 60;
 var canvas = document.getElementById("grid");
 var context = canvas.getContext("2d");
-var busyCoordinates = [];
-var isShadowToggled = true;
+
+var map = [];
 var directions = [-1, 0, 1];
+
+var COLS = 80;
+var ROWS = 60;
+var busyCoordinates = [];
 var MAX_ERRORS_COUNT = 1000;
 var MINIMUM_TILES_AMOUNT = 1000;
 
-startGame();
-
-function startGame() {
-    generateMap();
-    setTimeout(gameSetUp(), 1000);
-    function gameSetUp() {
-        generatePlayer();
-        generateWeapon(STARTING_WEAPONS_AMOUNT);
-        generateEnemies(TOTAL_ENEMIES);
-        generatePotions(STARTING_POTIONS_AMOUNT);
-        generateShadow();
-        drawMap(0, 0, COLS, ROWS);
-        updateLegend();
-    }
-}
+var VISIBILITY = 3;
+var shadow = []; //show only a part of map
+var isShadowToggled = true;
 
 function generateMap() {
     for (var row = 0; row < ROWS; row++) {
@@ -72,7 +56,7 @@ function generateMap() {
                 }
             }
         }
-        if (map[y][x] != 1) {
+        if (map[y][x] !== 1) {
             map[y][x] = 1;
             tiles++;
         }
@@ -81,37 +65,11 @@ function generateMap() {
 
 };
 
-function generateShadow() {
-    var startX = player.coords.x - VISIBILITY < 0 ? 0 : player.coords.x - VISIBILITY;
-    var startY = player.coords.y - VISIBILITY < 0 ? 0 : player.coords.y - VISIBILITY;
-    var endX = player.coords.x + VISIBILITY >= COLS ? COLS - 1 : player.coords.x + VISIBILITY;
-    var endY = player.coords.y + VISIBILITY >= ROWS ? ROWS - 1 : player.coords.y + VISIBILITY;
-    for (var row = 0; row < ROWS; row++) {
-        shadow.push([]);
-        for (var col = 0; col < COLS; col++) {
-            if (row >= startY && row <= endY && col >= startX && col <= endX) {
-                shadow[row].push(1);
-            } else {
-                shadow[row].push(0);
-            }
-        }
-    }
-}
-
-function updateLegend() {
-    document.getElementById("xp").innerText = player.xp;
-    document.getElementById("level").innerText = player.level;
-    document.getElementById("health").innerText = player.health;
-    document.getElementById("weapon").innerText = player.weapon.name;
-    document.getElementById("damage").innerText = player.weapon.damage;
-    document.getElementById("enemies").innerText = TOTAL_ENEMIES - defeatedEnemies;
-}
-
 function drawMap(startX, startY, endX, endY) {
     var color;
     for (var row = startY; row < endY; row++) {
         for (var col = startX; col < endX; col++) {
-            if (isShadowToggled && shadow[row][col] == 0) {
+            if (isShadowToggled && shadow[row][col] === 0) {
                 drawObject(col, row, "black");
             } else {
                 switch (map[row][col]) {
@@ -140,12 +98,12 @@ function drawMap(startX, startY, endX, endY) {
 }
 
 function areCoordsFree(x, y) {
-    if (map[y][x] != 1) {
+    if (map[y][x] !== 1) {
         return false;
     }
     for (var i = 0; i < busyCoordinates.length; i++) {
         try {
-            if (busyCoordinates[i].x == x && busyCoordinates[i].y == y) {
+            if (busyCoordinates[i].x === x && busyCoordinates[i].y === y) {
                 return false;
             }
         } catch (e) {
@@ -191,68 +149,26 @@ function drawObject(x, y, color) {
     context.fill();
 }
 
-// key down events
-document.addEventListener("keydown", function (e) {
-    var x = player.coords.x;
-    var y = player.coords.y;
-    var oldX = player.coords.x;
-    var oldY = player.coords.y;
-    switch (e.which) {
-        case 37: // left
-            x--;
-            break;
-        case 38: // up
-            y--;
-            break;
-        case 39: // right
-            x++;
-            break;
-        case 40: // down
-            y++;
-            break;
-        default:
-            return; // exit this handler for other keys
-    }
-    // check if next spot is enemy
-    if (map[y][x] === "enemy") {
-        fightEnemy(x, y);
-    } else if (map[y][x] !== 0) {
-        // if next spot is potion
-        if (map[y][x] === "potion") {
-            drinkPotion(x, y);
-        } else if (map[y][x] === "weapon") {
-            takeWeapon(x, y);
-        }
-        updatePlayerPosition(player.coords.x, player.coords.y, x, y);
-        updateLegend();
-        drawMap(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, x + VISIBILITY + 2, y + VISIBILITY + 2);
-    }
-    e.preventDefault(); // prevent the default action (scroll / move caret)
-});
-
-function resetGame() {
-    defeatedEnemies = [];
-    enemies = [];
-    busyCoordinates = [];
-    shadow = [];
-    map = [];
-}
-
-function userWins() {
-    alert("YOU CONQUERED THE DUNGEON!");
-    resetGame();
-    startGame();
-};
-
-function gameOver() {
-    alert("GAME OVER");
-    resetGame();
-    startGame();
-};
-
 function removeObjFromMap(x, y) {
     map[y][x] = 1;
 };
+
+function generateShadow() {
+    var startX = player.coords.x - VISIBILITY < 0 ? 0 : player.coords.x - VISIBILITY;
+    var startY = player.coords.y - VISIBILITY < 0 ? 0 : player.coords.y - VISIBILITY;
+    var endX = player.coords.x + VISIBILITY >= COLS ? COLS - 1 : player.coords.x + VISIBILITY;
+    var endY = player.coords.y + VISIBILITY >= ROWS ? ROWS - 1 : player.coords.y + VISIBILITY;
+    for (var row = 0; row < ROWS; row++) {
+        shadow.push([]);
+        for (var col = 0; col < COLS; col++) {
+            if (row >= startY && row <= endY && col >= startX && col <= endX) {
+                shadow[row].push(1);
+            } else {
+                shadow[row].push(0);
+            }
+        }
+    }
+}
 
 function toggleShadow() {
     isShadowToggled = !isShadowToggled;

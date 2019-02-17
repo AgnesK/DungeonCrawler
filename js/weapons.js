@@ -27,4 +27,3 @@ function takeWeapon(x, y) {
     removeObjFromMap(x, y);
     generateWeapon(1);
 }
-
