@@ -7,6 +7,8 @@ var directions = [-1, 0, 1];
 const PIXEL_SIZE = 15;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
+// unclear what 'busy' means. seems to prevent coordinates from being picked (e.g. for spawning)
+// if at any time something was already on that spot. Even if the coords are now free/floor
 var busyCoordinates = [];
 const MAX_TRIES_COUNT = 1000;
 const MINIMUM_TILES_AMOUNT = 1000;
@@ -17,9 +19,9 @@ var isShadowToggled = false;
 
 const ENTITIES = {enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'};
 
-function textMap(map){
+function textMap(map) {
     let tmp = "";
-    for(let row of map){
+    for (let row of map) {
         for (let col of row) {
             tmp += col
         }
@@ -30,7 +32,7 @@ function textMap(map){
 
 // replace with static map gen/allow switching
 function generateMap() {
-    if (COLS <= 7 || ROWS <= 7) {
+    if (COLS <= 5 || ROWS <= 5) {
         alert("The map is to small, can't generate a map");
         return
     }
@@ -47,7 +49,7 @@ function generateMap() {
     let x = Math.floor(COLS / 2);
     let y = Math.floor(ROWS / 2);
     for (let i = 0; i < 30000; i++) {
-        // ensure the next step does leave a 3 wall border
+        // ensure the next step does leave a n-wide border of walls
         do {
             tries++;
             // walk a random distance either in x or y direction
@@ -68,7 +70,7 @@ function generateMap() {
                     return;
                 }
             }
-        } while (x <= 3 || x >= COLS - 4 || y <= 3 || y >= ROWS - 4);
+        } while (x <= 2 || x >= COLS - 3 || y <= 2 || y >= ROWS - 3);
 
         if (map[y][x] !== ENTITIES.floor) {
             map[y][x] = ENTITIES.floor;
@@ -159,11 +161,18 @@ function addObjToMap(coords, identifier) {
     addBusyCoords(coords.x, coords.y);
 }
 
+var img = new Image();
+img.src = 'assets/green_character.png';
+
 function drawObject(x, y, color) {
+    let colorn = color !== 'blue' ? color : 'white';
     context.beginPath();
     context.rect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
-    context.fillStyle = color;
+    context.fillStyle = colorn;
     context.fill();
+    if (color === 'blue') {
+        context.drawImage(img, x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+    }
 }
 
 function removeObjFromMap(x, y) {
