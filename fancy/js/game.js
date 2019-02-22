@@ -2,8 +2,7 @@ startGame();
 
 function startGame() {
     generateMap();
-    setTimeout(gameSetUp(), 1000);
-
+    setTimeout(gameSetUp, 500);
     // difficulty settings, the base game takes ages to complete
     function gameSetUp() {
         generatePlayer();
@@ -12,6 +11,7 @@ function startGame() {
         generatePotions(STARTING_POTIONS_AMOUNT);
         generateShadow();
         drawMap(0, 0, COLS, ROWS);
+        console.log(textMap(map), COLS, ROWS);
         updateLegend();
     }
 }

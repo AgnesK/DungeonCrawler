@@ -4,67 +4,76 @@ var context = canvas.getContext("2d");
 var map = [];
 var directions = [-1, 0, 1];
 
-const PIXEL_SIZE = 10;
+const PIXEL_SIZE = 15;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 var busyCoordinates = [];
-var MAX_ERRORS_COUNT = 1000;
+const MAX_TRIES_COUNT = 1000;
 const MINIMUM_TILES_AMOUNT = 1000;
 
-var VISIBILITY = 3;
+const VISIBILITY = 3;
 var shadow = []; //show only a part of map
-var isShadowToggled = true;
+var isShadowToggled = false;
 
 const ENTITIES = {enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'};
 
+function textMap(map){
+    let tmp = "";
+    for(let row of map){
+        for (let col of row) {
+            tmp += col
+        }
+        tmp += '\n'
+    }
+    return tmp
+}
+
 // replace with static map gen/allow switching
 function generateMap() {
-    for (var row = 0; row < ROWS; row++) {
+    if (COLS <= 7 || ROWS <= 7) {
+        alert("The map is to small, can't generate a map");
+        return
+    }
+
+    // fill the whole map with walls
+    for (let row = 0; row < ROWS; row++) {
         map.push([]);
         for (let col = 0; col < COLS; col++) {
             map[row].push(ENTITIES.wall);
         }
     }
-    var tiles = 0;
-    var errors = 0;
-    var x = COLS / 2;
-    var y = ROWS / 2;
-    for (var i = 0; i < 30000; i++) {
-        var increment = directions[Math.floor(Math.random() * directions.length)];
-        if (Math.random() < 0.5) {
-            x += increment;
-            while (x <= 3 || x >= COLS - 4) {
-                x += directions[Math.floor(Math.random() * directions.length)];
-                errors++;
-                if (errors > MAX_ERRORS_COUNT) {
-                    if (tiles < MINIMUM_TILES_AMOUNT) {
-                        x = COLS / 2;
-                        y = ROWS / 2;
-                    } else {
-                        return;
-                    }
+    let tiles = 0;
+    let tries = 0;
+    let x = Math.floor(COLS / 2);
+    let y = Math.floor(ROWS / 2);
+    for (let i = 0; i < 30000; i++) {
+        // ensure the next step does leave a 3 wall border
+        do {
+            tries++;
+            // walk a random distance either in x or y direction
+            let increment = directions[Math.floor(Math.random() * directions.length)];
+            if (Math.random() < 0.5) {
+                x += increment;
+            } else {
+                y += increment;
+            }
+
+            // if we still need tiles, reset into the center to continue
+            if (tries > MAX_TRIES_COUNT) {
+                if (tiles < MINIMUM_TILES_AMOUNT) {
+                    console.log(`reset with ${x},${y}`);
+                    x = Math.floor(COLS / 2);
+                    y = Math.floor(ROWS / 2);
+                } else {
+                    return;
                 }
             }
-        } else {
-            y += increment;
-            while (y <= 3 || y >= ROWS - 4) {
-                y += directions[Math.floor(Math.random() * directions.length)];
-                errors++;
-                if (errors > MAX_ERRORS_COUNT) {
-                    if (tiles < MINIMUM_TILES_AMOUNT) {
-                        x = COLS / 2;
-                        y = ROWS / 2;
-                    } else {
-                        return;
-                    }
-                }
-            }
-        }
+        } while (x <= 3 || x >= COLS - 4 || y <= 3 || y >= ROWS - 4);
+
         if (map[y][x] !== ENTITIES.floor) {
             map[y][x] = ENTITIES.floor;
             tiles++;
         }
-        errors = 0;
         tries = 0;
     }
 }
