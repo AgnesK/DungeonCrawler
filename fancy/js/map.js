@@ -14,6 +14,7 @@ var VISIBILITY = 3;
 var shadow = []; //show only a part of map
 var isShadowToggled = true;
 
+// replace with static map gen/allow switching
 function generateMap() {
     for (var row = 0; row < ROWS; row++) {
         map.push([]);
@@ -72,6 +73,7 @@ function drawMap(startX, startY, endX, endY) {
             if (isShadowToggled && shadow[row][col] === 0) {
                 drawObject(col, row, "black");
             } else {
+                // mixing ints and strings??
                 switch (map[row][col]) {
                     case 1:
                         color = "white";
@@ -114,6 +116,8 @@ function areCoordsFree(x, y) {
 }
 
 // set the given coords as busy + the 8 neighbors
+// what are these used for? right now they are only used to check if there is space on the floor.
+// but since everything is also added to map[y][x], why is it needed?
 function addBusyCoords(x, y) {
     busyCoordinates.push({
         x: x,
@@ -144,6 +148,7 @@ function addObjToMap(coords, identifier) {
 
 function drawObject(x, y, color) {
     context.beginPath();
+    // extract size constant
     context.rect(x * 10, y * 10, 10, 10);
     context.fillStyle = color;
     context.fill();
@@ -153,6 +158,7 @@ function removeObjFromMap(x, y) {
     map[y][x] = 1;
 };
 
+// keep or unnecessary complexity?
 function generateShadow() {
     var startX = player.coords.x - VISIBILITY < 0 ? 0 : player.coords.x - VISIBILITY;
     var startY = player.coords.y - VISIBILITY < 0 ? 0 : player.coords.y - VISIBILITY;

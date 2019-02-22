@@ -5,6 +5,7 @@ var TOTAL_ENEMIES = 10;
 var defeatedEnemies = 0;
 var enemies = [];
 
+//TODO why is this a function?
 var Enemy =
     function Enemy(health, coords, damage) {_classCallCheck(this, Enemy);
         this.health = health;
@@ -12,6 +13,7 @@ var Enemy =
         this.damage = damage;
     };
 
+// TODO function place enemy
 function generateEnemies(amount) {
     for (var i = 0; i < amount; i++) {
         var coords = generateValidCoords();
@@ -29,6 +31,7 @@ function getEnemy(x, y) {
 function fightEnemy(x, y) {
     var enemy = getEnemy(x, y);
     if (player.health - enemy.damage <= 0) {
+        // shouldn't this be in the main loop
         gameOver();
         return;
     } else if (enemy.health - player.weapon.damage <= 0) {
@@ -42,6 +45,7 @@ function fightEnemy(x, y) {
 function enemyDefeated(enemy) {
     defeatedEnemies++;
     if (defeatedEnemies === 10) {
+        // shouldn't this be in the main loop
         userWins();
         return;
     }

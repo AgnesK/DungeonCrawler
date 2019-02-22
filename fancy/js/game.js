@@ -3,6 +3,7 @@ startGame();
 function startGame() {
     generateMap();
     setTimeout(gameSetUp(), 1000);
+    // difficulty settings, the base game takes ages to complete
     function gameSetUp() {
         generatePlayer();
         generateWeapon(STARTING_WEAPONS_AMOUNT);
@@ -24,6 +25,9 @@ function updateLegend() {
 }
 
 // key down events
+// mobile?
+// this has to be fundamentally different if we want smooth movement (game loop)
+// not necessary right now, because updates are bound to the player moving
 document.addEventListener("keydown", function (e) {
     var x = player.coords.x;
     var y = player.coords.y;
@@ -72,6 +76,7 @@ function resetGame() {
 
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
+    // how could we make this more awesome
     resetGame();
     startGame();
 }
