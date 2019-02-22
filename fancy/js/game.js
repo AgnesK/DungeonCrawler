@@ -3,6 +3,7 @@ startGame();
 function startGame() {
     generateMap();
     setTimeout(gameSetUp(), 1000);
+
     // difficulty settings, the base game takes ages to complete
     function gameSetUp() {
         generatePlayer();
@@ -29,10 +30,10 @@ function updateLegend() {
 // this has to be fundamentally different if we want smooth movement (game loop)
 // not necessary right now, because updates are bound to the player moving
 document.addEventListener("keydown", function (e) {
-    var x = player.coords.x;
-    var y = player.coords.y;
-    var oldX = player.coords.x;
-    var oldY = player.coords.y;
+    let x = player.coords.x;
+    let y = player.coords.y;
+    let oldX = player.coords.x;
+    let oldY = player.coords.y;
     switch (e.which) {
         case 37: // left
             x--;
@@ -67,7 +68,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 function resetGame() {
-    defeatedEnemies = [];
+    defeatedEnemies = 0;
     enemies = [];
     busyCoordinates = [];
     shadow = [];
@@ -86,5 +87,3 @@ function gameOver() {
     resetGame();
     startGame();
 }
-
-function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}

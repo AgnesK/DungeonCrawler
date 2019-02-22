@@ -5,11 +5,11 @@ var map = [];
 var directions = [-1, 0, 1];
 
 const PIXEL_SIZE = 10;
-var COLS = 80;
-var ROWS = 60;
+const COLS = Math.floor(canvas.width / PIXEL_SIZE);
+const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 var busyCoordinates = [];
 var MAX_ERRORS_COUNT = 1000;
-var MINIMUM_TILES_AMOUNT = 1000;
+const MINIMUM_TILES_AMOUNT = 1000;
 
 var VISIBILITY = 3;
 var shadow = []; //show only a part of map
@@ -21,7 +21,7 @@ const ENTITIES = {enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', 
 function generateMap() {
     for (var row = 0; row < ROWS; row++) {
         map.push([]);
-        for (var col = 0; col < COLS; col++) {
+        for (let col = 0; col < COLS; col++) {
             map[row].push(ENTITIES.wall);
         }
     }
@@ -65,18 +65,17 @@ function generateMap() {
             tiles++;
         }
         errors = 0;
+        tries = 0;
     }
-
 }
 
 function drawMap(startX, startY, endX, endY) {
-    var color;
-    for (var row = startY; row < endY; row++) {
-        for (var col = startX; col < endX; col++) {
+    let color;
+    for (let row = startY; row < endY; row++) {
+        for (let col = startX; col < endX; col++) {
             if (isShadowToggled && shadow[row][col] === 0) {
                 drawObject(col, row, "black");
             } else {
-                // mixing ints and strings??
                 switch (map[row][col]) {
                     case ENTITIES.floor:
                         color = "white";
@@ -108,7 +107,7 @@ function areCoordsFree(x, y) {
     if (map[y][x] !== ENTITIES.floor) {
         return false;
     }
-    for (var i = 0; i < busyCoordinates.length; i++) {
+    for (let i = 0; i < busyCoordinates.length; i++) {
         try {
             if (busyCoordinates[i].x === x && busyCoordinates[i].y === y) {
                 return false;
@@ -128,7 +127,6 @@ function addBusyCoords(x, y) {
         x: x,
         y: y
     });
-
 }
 
 function generateValidCoords() {
@@ -142,7 +140,6 @@ function generateValidCoords() {
         x: x,
         y: y
     };
-
 }
 
 // add given coords to map
@@ -166,13 +163,13 @@ function removeObjFromMap(x, y) {
 
 // keep or unnecessary complexity?
 function generateShadow() {
-    var startX = player.coords.x - VISIBILITY < 0 ? 0 : player.coords.x - VISIBILITY;
-    var startY = player.coords.y - VISIBILITY < 0 ? 0 : player.coords.y - VISIBILITY;
-    var endX = player.coords.x + VISIBILITY >= COLS ? COLS - 1 : player.coords.x + VISIBILITY;
-    var endY = player.coords.y + VISIBILITY >= ROWS ? ROWS - 1 : player.coords.y + VISIBILITY;
-    for (var row = 0; row < ROWS; row++) {
+    const startX = player.coords.x - VISIBILITY < 0 ? 0 : player.coords.x - VISIBILITY;
+    const startY = player.coords.y - VISIBILITY < 0 ? 0 : player.coords.y - VISIBILITY;
+    const endX = player.coords.x + VISIBILITY >= COLS ? COLS - 1 : player.coords.x + VISIBILITY;
+    const endY = player.coords.y + VISIBILITY >= ROWS ? ROWS - 1 : player.coords.y + VISIBILITY;
+    for (let row = 0; row < ROWS; row++) {
         shadow.push([]);
-        for (var col = 0; col < COLS; col++) {
+        for (let col = 0; col < COLS; col++) {
             if (row >= startY && row <= endY && col >= startX && col <= endX) {
                 shadow[row].push(1);
             } else {

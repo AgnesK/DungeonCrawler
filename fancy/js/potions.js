@@ -1,9 +1,9 @@
-var POTIONS = [10, 20, 30, 40, 50];
-var STARTING_POTIONS_AMOUNT = 4;
+const POTIONS = [10, 20, 30, 40, 50];
+const STARTING_POTIONS_AMOUNT = 4;
 
 function generatePotions(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
+    for (let i = 0; i < amount; i++) {
+        const coords = generateValidCoords();
         addObjToMap(coords, ENTITIES.potion);
         if (!isShadowToggled) {
             drawObject(coords.x, coords.y, "green");

@@ -1,22 +1,22 @@
-var ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
-var ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
-var TOTAL_ENEMIES = 10;
+const ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
+const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
+const TOTAL_ENEMIES = 10;
 
 var defeatedEnemies = 0;
 var enemies = [];
 
-//TODO why is this a function?
-var Enemy =
-    function Enemy(health, coords, damage) {_classCallCheck(this, Enemy);
-        this.health = health;
+class Enemy {
+    constructor(health, coords, damage){
         this.coords = coords;
+        this.health = health;
         this.damage = damage;
-    };
+    }
+}
 
 // TODO function place enemy
 function generateEnemies(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
+    for (let i = 0; i < amount; i++) {
+        const coords = generateValidCoords();
         enemies.push(new Enemy(ENEMIES_HEALTH[Math.floor(Math.random() * ENEMIES_HEALTH.length)], coords, ENEMIES_DAMAGE[Math.floor(Math.random() * ENEMIES_DAMAGE.length)]));
         addObjToMap(coords, ENTITIES.enemy);
     }
@@ -29,7 +29,7 @@ function getEnemy(x, y) {
 }
 
 function fightEnemy(x, y) {
-    var enemy = getEnemy(x, y);
+    const enemy = getEnemy(x, y);
     if (player.health - enemy.damage <= 0) {
         // shouldn't this be in the main loop
         gameOver();

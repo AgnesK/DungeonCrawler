@@ -1,4 +1,4 @@
-var WEAPONS = [{
+const WEAPONS = [{
     name: "Knife",
     damage: 15
 },
@@ -14,11 +14,11 @@ var WEAPONS = [{
         name: "Atomic Bomb",
         damage: 100
     }];
-var STARTING_WEAPONS_AMOUNT = 3;
+const STARTING_WEAPONS_AMOUNT = 3;
 
 function generateWeapon(amount) {
-    for (var i = 0; i < amount; i++) {
-        var coords = generateValidCoords();
+    for (let i = 0; i < amount; i++) {
+        const coords = generateValidCoords();
         addObjToMap(coords, ENTITIES.weapon);
         if (!isShadowToggled) {
             drawObject(coords.x, coords.y, "orange");
