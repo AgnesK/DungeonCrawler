@@ -18,7 +18,7 @@ function generateEnemies(amount) {
     for (var i = 0; i < amount; i++) {
         var coords = generateValidCoords();
         enemies.push(new Enemy(ENEMIES_HEALTH[Math.floor(Math.random() * ENEMIES_HEALTH.length)], coords, ENEMIES_DAMAGE[Math.floor(Math.random() * ENEMIES_DAMAGE.length)]));
-        addObjToMap(coords, "enemy");
+        addObjToMap(coords, ENTITIES.enemy);
     }
 }
 

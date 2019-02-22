@@ -1,21 +1,25 @@
 var WEAPONS = [{
     name: "Knife",
-    damage: 15 },
+    damage: 15
+},
     {
         name: "Gun",
-        damage: 30 },
+        damage: 30
+    },
     {
         name: "Bazooka",
-        damage: 60 },
+        damage: 60
+    },
     {
         name: "Atomic Bomb",
-        damage: 100 }];
+        damage: 100
+    }];
 var STARTING_WEAPONS_AMOUNT = 3;
 
 function generateWeapon(amount) {
     for (var i = 0; i < amount; i++) {
         var coords = generateValidCoords();
-        addObjToMap(coords, "weapon");
+        addObjToMap(coords, ENTITIES.weapon);
         if (!isShadowToggled) {
             drawObject(coords.x, coords.y, "orange");
         }

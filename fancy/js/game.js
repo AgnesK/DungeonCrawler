@@ -50,13 +50,13 @@ document.addEventListener("keydown", function (e) {
             return; // exit this handler for other keys
     }
     // check if next spot is enemy
-    if (map[y][x] === "enemy") {
+    if (map[y][x] === ENTITIES.enemy) {
         fightEnemy(x, y);
-    } else if (map[y][x] !== 0) {
+    } else if (map[y][x] !== ENTITIES.wall) {
         // if next spot is potion
-        if (map[y][x] === "potion") {
+        if (map[y][x] === ENTITIES.potion) {
             drinkPotion(x, y);
-        } else if (map[y][x] === "weapon") {
+        } else if (map[y][x] === ENTITIES.weapon) {
             takeWeapon(x, y);
         }
         updatePlayerPosition(player.coords.x, player.coords.y, x, y);

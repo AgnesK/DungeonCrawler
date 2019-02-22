@@ -4,7 +4,7 @@ var STARTING_POTIONS_AMOUNT = 4;
 function generatePotions(amount) {
     for (var i = 0; i < amount; i++) {
         var coords = generateValidCoords();
-        addObjToMap(coords, "potion");
+        addObjToMap(coords, ENTITIES.potion);
         if (!isShadowToggled) {
             drawObject(coords.x, coords.y, "green");
         }

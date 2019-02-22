@@ -12,12 +12,12 @@ var Player =
 function generatePlayer() {
     var coords = generateValidCoords();
     player = new Player(1, 100, WEAPONS[0], coords, 30);
-    addObjToMap(player.coords, "player");
+    addObjToMap(player.coords, ENTITIES.player);
 }
 
 function updatePlayerPosition(oldX, oldY, newX, newY) {
     removeObjFromMap(oldX, oldY);
-    map[newY][newX] = "player";
+    map[newY][newX] = ENTITIES.player;
     player.coords = { x: newX, y: newY };
 
     var startX = oldX - VISIBILITY < 0 ? 0 : oldX - VISIBILITY;

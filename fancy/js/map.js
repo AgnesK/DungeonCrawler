@@ -4,6 +4,7 @@ var context = canvas.getContext("2d");
 var map = [];
 var directions = [-1, 0, 1];
 
+const PIXEL_SIZE = 10;
 var COLS = 80;
 var ROWS = 60;
 var busyCoordinates = [];
@@ -14,12 +15,14 @@ var VISIBILITY = 3;
 var shadow = []; //show only a part of map
 var isShadowToggled = true;
 
+const ENTITIES = {enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'};
+
 // replace with static map gen/allow switching
 function generateMap() {
     for (var row = 0; row < ROWS; row++) {
         map.push([]);
         for (var col = 0; col < COLS; col++) {
-            map[row].push(0);
+            map[row].push(ENTITIES.wall);
         }
     }
     var tiles = 0;
@@ -57,14 +60,14 @@ function generateMap() {
                 }
             }
         }
-        if (map[y][x] !== 1) {
-            map[y][x] = 1;
+        if (map[y][x] !== ENTITIES.floor) {
+            map[y][x] = ENTITIES.floor;
             tiles++;
         }
         errors = 0;
     }
 
-};
+}
 
 function drawMap(startX, startY, endX, endY) {
     var color;
@@ -75,23 +78,25 @@ function drawMap(startX, startY, endX, endY) {
             } else {
                 // mixing ints and strings??
                 switch (map[row][col]) {
-                    case 1:
+                    case ENTITIES.floor:
                         color = "white";
                         break;
-                    case "player":
+                    case ENTITIES.player:
                         color = "blue";
                         break;
-                    case "enemy":
+                    case ENTITIES.enemy:
                         color = "red";
                         break;
-                    case "potion":
+                    case ENTITIES.potion:
                         color = "green";
                         break;
-                    case "weapon":
+                    case ENTITIES.weapon:
                         color = "orange";
                         break;
+                    case ENTITIES.wall:
                     default:
-                        color = "grey";}
+                        color = "grey";
+                }
 
                 drawObject(col, row, color);
             }
@@ -100,7 +105,7 @@ function drawMap(startX, startY, endX, endY) {
 }
 
 function areCoordsFree(x, y) {
-    if (map[y][x] !== 1) {
+    if (map[y][x] !== ENTITIES.floor) {
         return false;
     }
     for (var i = 0; i < busyCoordinates.length; i++) {
@@ -121,7 +126,8 @@ function areCoordsFree(x, y) {
 function addBusyCoords(x, y) {
     busyCoordinates.push({
         x: x,
-        y: y });
+        y: y
+    });
 
 }
 
@@ -134,7 +140,8 @@ function generateValidCoords() {
     }
     return {
         x: x,
-        y: y };
+        y: y
+    };
 
 }
 
@@ -148,15 +155,14 @@ function addObjToMap(coords, identifier) {
 
 function drawObject(x, y, color) {
     context.beginPath();
-    // extract size constant
-    context.rect(x * 10, y * 10, 10, 10);
+    context.rect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
     context.fillStyle = color;
     context.fill();
 }
 
 function removeObjFromMap(x, y) {
-    map[y][x] = 1;
-};
+    map[y][x] = ENTITIES.floor;
+}
 
 // keep or unnecessary complexity?
 function generateShadow() {

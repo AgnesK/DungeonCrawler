@@ -13,13 +13,13 @@
 - levels (map difficulty settings)
 - simplify and make more
 
-to remove
+to remove:
 - map gen
 - shadow
 
 start:
-FS: landing page for forking into team pages (subdir for different versions)
-refactor floor, wall, etc into strings/enum/constants
+FS (Done): landing page for forking into team pages (subdir for different versions)
+FS (Done): refactor floor, wall, etc into strings/enum/constants
 AK: mobile
 rectangle with 1 enemy, minimal legend (only health)
 
