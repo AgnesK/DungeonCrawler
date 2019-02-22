@@ -17,7 +17,7 @@ const VISIBILITY = 3;
 var shadow = []; //show only a part of map
 var isShadowToggled = false;
 
-const ENTITIES = {enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'};
+const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'});
 
 function textMap(map) {
     let tmp = "";
@@ -82,8 +82,8 @@ function generateMap() {
 
 function drawMap(startX, startY, endX, endY) {
     let color;
-    for (let row = startY; row < endY; row++) {
-        for (let col = startX; col < endX; col++) {
+    for (let row = Math.max(0, startY); row < Math.min(ROWS, endY); row++) {
+        for (let col = Math.max(0, startX); col < Math.min(COLS, endX); col++) {
             if (isShadowToggled && shadow[row][col] === 0) {
                 drawObject(col, row, "black");
             } else {
@@ -98,14 +98,14 @@ function drawMap(startX, startY, endX, endY) {
                         color = "red";
                         break;
                     case ENTITIES.potion:
-                        color = "green";
+                        color = "lightgreen";
                         break;
                     case ENTITIES.weapon:
                         color = "orange";
                         break;
                     case ENTITIES.wall:
                     default:
-                        color = "grey";
+                        color = "dimgrey";
                 }
 
                 drawObject(col, row, color);
