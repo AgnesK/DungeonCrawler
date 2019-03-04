@@ -42,9 +42,7 @@ function movePlayer(oldX, oldY, newX, newY) {
     }
 }
 
-// key down events
-// mobile?
-// this has to be fundamentally different if we want smooth movement (game loop)
+// Movement has to be fundamentally different if we want smooth movement (game loop)
 // not necessary right now, because updates are bound to the player moving
 
 // To get the proper keycode, see e.g. https://keycode.info/
@@ -53,8 +51,9 @@ const KEYCODES = Object.freeze({ left: 37, up: 38, right: 39, down: 40})
 document.addEventListener("keydown", function (e) {
     let newX = player.coords.x;
     let newY = player.coords.y;
-    let oldX = player.coords.x;
-    let oldY = player.coords.y;
+    const oldX = player.coords.x;
+    const oldY = player.coords.y;
+
     switch (e.which) {
         case KEYCODES.left:
             newX--;
@@ -71,8 +70,39 @@ document.addEventListener("keydown", function (e) {
         default:
             return; // exit this handler for other keys
     }
+
     movePlayer(oldX, oldY, newX, newY);
     e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
+document.addEventListener("touchstart", function (e) {
+    let newX = player.coords.x;
+    let newY = player.coords.y;
+    const oldX = player.coords.x;
+    const oldY = player.coords.y;
+
+    if(e.touches) {
+        const touchX = Math.floor((e.touches[0].pageX - canvas.offsetLeft) / PIXEL_SIZE);
+        const touchY = Math.floor((e.touches[0].pageY - canvas.offsetTop) / PIXEL_SIZE);
+        const touchIsFurtherFromPlayerOnXThanYAxis = Math.abs(oldX - touchX) > Math.abs(oldY - touchY);
+
+        if(touchIsFurtherFromPlayerOnXThanYAxis) {
+            // touch was to the right of player, i.e. player walks one step to the right
+            if(oldX - touchX < 0) {
+                newX++;
+            } else newX--; // touch was to the left of player
+        // touch was to below player, i.e. player walks one step down
+        } else if(oldY - touchY < 0) {
+            newY++;
+        } else newY--; // touch was above player
+    }
+
+    movePlayer(oldX, oldY, newX, newY);
+    e.preventDefault();
+});
+// Needed in order to prevent zoom on double tap on mobile devices.
+document.addEventListener("touchend", function (e) {
+    e.preventDefault()
 });
 
 function resetGame() {
