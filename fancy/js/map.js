@@ -50,27 +50,31 @@ function generateMap() {
     let y = Math.floor(ROWS / 2);
     for (let i = 0; i < 30000; i++) {
         // ensure the next step does leave a n-wide border of walls
+        let nextx = x;
+        let nexty = y;
         do {
             tries++;
             // walk a random distance either in x or y direction
             let increment = directions[Math.floor(Math.random() * directions.length)];
             if (Math.random() < 0.5) {
-                x += increment;
+                nextx = x + increment;
             } else {
-                y += increment;
+                nexty = y + increment;
             }
 
             // if we still need tiles, reset into the center to continue
             if (tries > MAX_TRIES_COUNT) {
                 if (tiles < MINIMUM_TILES_AMOUNT) {
                     console.log(`reset with ${x},${y}`);
-                    x = Math.floor(COLS / 2);
-                    y = Math.floor(ROWS / 2);
+                    nextx = Math.floor(COLS / 2);
+                    nexty = Math.floor(ROWS / 2);
                 } else {
                     return;
                 }
             }
-        } while (x <= 2 || x >= COLS - 3 || y <= 2 || y >= ROWS - 3);
+        } while (nextx <= 2 || nextx >= COLS - 3 || nexty <= 2 || nexty >= ROWS - 3);
+        x = nextx;
+        y = nexty;
 
         if (map[y][x] !== ENTITIES.floor) {
             map[y][x] = ENTITIES.floor;
