@@ -25,45 +25,53 @@ function updateLegend() {
     document.getElementById("enemies").innerText = TOTAL_ENEMIES - defeatedEnemies;
 }
 
+function movePlayer(oldX, oldY, newX, newY) {
+    // check if next spot is enemy
+    if (map[newY][newX] === ENTITIES.enemy) {
+        fightEnemy(newX, newY);
+    } else if (map[newY][newX] !== ENTITIES.wall) {
+        // if next spot is potion
+        if (map[newY][newX] === ENTITIES.potion) {
+            drinkPotion(newX, newY);
+        } else if (map[newY][newX] === ENTITIES.weapon) {
+            takeWeapon(newX, newY);
+        }
+        updatePlayerPosition(player.coords.x, player.coords.y, newX, newY);
+        updateLegend();
+        drawMap(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, newX + VISIBILITY + 2, newY + VISIBILITY + 2);
+    }
+}
+
 // key down events
 // mobile?
 // this has to be fundamentally different if we want smooth movement (game loop)
 // not necessary right now, because updates are bound to the player moving
+
+// To get the proper keycode, see e.g. https://keycode.info/
+const KEYCODES = Object.freeze({ left: 37, up: 38, right: 39, down: 40})
+
 document.addEventListener("keydown", function (e) {
-    let x = player.coords.x;
-    let y = player.coords.y;
+    let newX = player.coords.x;
+    let newY = player.coords.y;
     let oldX = player.coords.x;
     let oldY = player.coords.y;
     switch (e.which) {
-        case 37: // left
-            x--;
+        case KEYCODES.left:
+            newX--;
             break;
-        case 38: // up
-            y--;
+        case KEYCODES.up:
+            newY--;
             break;
-        case 39: // right
-            x++;
+        case KEYCODES.right:
+            newX++;
             break;
-        case 40: // down
-            y++;
+        case KEYCODES.down:
+            newY++;
             break;
         default:
             return; // exit this handler for other keys
     }
-    // check if next spot is enemy
-    if (map[y][x] === ENTITIES.enemy) {
-        fightEnemy(x, y);
-    } else if (map[y][x] !== ENTITIES.wall) {
-        // if next spot is potion
-        if (map[y][x] === ENTITIES.potion) {
-            drinkPotion(x, y);
-        } else if (map[y][x] === ENTITIES.weapon) {
-            takeWeapon(x, y);
-        }
-        updatePlayerPosition(player.coords.x, player.coords.y, x, y);
-        updateLegend();
-        drawMap(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, x + VISIBILITY + 2, y + VISIBILITY + 2);
-    }
+    movePlayer(oldX, oldY, newX, newY);
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
