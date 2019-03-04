@@ -1,21 +1,21 @@
-var canvas = document.getElementById("grid");
-var context = canvas.getContext("2d");
+let canvas = document.getElementById("grid");
+let context = canvas.getContext("2d");
 
-var map = [];
-var directions = [-1, 0, 1];
+let map = [];
+let directions = [-1, 0, 1];
 
 const PIXEL_SIZE = 15;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 // unclear what 'busy' means. seems to prevent coordinates from being picked (e.g. for spawning)
 // if at any time something was already on that spot. Even if the coords are now free/floor
-var busyCoordinates = [];
+let busyCoordinates = [];
 const MAX_TRIES_COUNT = 1000;
 const MINIMUM_TILES_AMOUNT = 1000;
 
 const VISIBILITY = 3;
-var shadow = []; //show only a part of map
-var isShadowToggled = false;
+let shadow = []; //show only a part of map
+let isShadowToggled = false;
 
 const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'});
 
@@ -33,7 +33,7 @@ function textMap(map) {
 // replace with static map gen/allow switching
 function generateMap() {
     if (COLS <= 5 || ROWS <= 5) {
-        alert("The map is to small, can't generate a map");
+        alert("The map is too small, can't generate a map");
         return
     }
 
@@ -141,8 +141,8 @@ function addBusyCoords(x, y) {
 }
 
 function generateValidCoords() {
-    var x = Math.floor(Math.random() * COLS);
-    var y = Math.floor(Math.random() * ROWS);
+    let x = Math.floor(Math.random() * COLS);
+    let y = Math.floor(Math.random() * ROWS);
     while (!areCoordsFree(x, y)) {
         x = Math.floor(Math.random() * COLS);
         y = Math.floor(Math.random() * ROWS);
@@ -161,7 +161,7 @@ function addObjToMap(coords, identifier) {
     addBusyCoords(coords.x, coords.y);
 }
 
-var img = new Image();
+let img = new Image();
 img.src = 'assets/green_character.png';
 
 function drawObject(x, y, color) {

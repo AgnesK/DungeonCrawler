@@ -1,4 +1,4 @@
-var player;
+let player;
 
 class Player {
     constructor(level, health, weapon, coords, xp) {

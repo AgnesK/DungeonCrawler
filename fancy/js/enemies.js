@@ -2,8 +2,8 @@ const ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
 const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
 const TOTAL_ENEMIES = 10;
 
-var defeatedEnemies = 0;
-var enemies = [];
+let defeatedEnemies = 0;
+let enemies = [];
 
 class Enemy {
     constructor(health, coords, damage){
