@@ -75,7 +75,7 @@ document.addEventListener("keydown", function (e) {
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
-document.addEventListener("touchstart", function (e) {
+canvas.addEventListener("touchstart", function (e) {
     let newX = player.coords.x;
     let newY = player.coords.y;
     const oldX = player.coords.x;
@@ -101,7 +101,7 @@ document.addEventListener("touchstart", function (e) {
     e.preventDefault();
 });
 // Needed in order to prevent zoom on double tap on mobile devices.
-document.addEventListener("touchend", function (e) {
+canvas.addEventListener("touchend", function (e) {
     e.preventDefault()
 });
 
