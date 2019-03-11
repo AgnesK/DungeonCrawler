@@ -7,12 +7,8 @@ let directions = [-1, 0, 1];
 const PIXEL_SIZE = 15;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
-// unclear what 'busy' means. seems to prevent coordinates from being picked (e.g. for spawning)
-// if at any time something was already on that spot. Even if the coords are now free/floor
-let busyCoordinates = [];
 const MAP_GEN_ROUNDS = 3000;
-const MAX_TRIES_COUNT = 1000;
-const MINIMUM_TILES_AMOUNT = 1000;
+const MAX_TRIES_COUNT = 10;
 
 const VISIBILITY = 3;
 let shadow = []; //show only a part of map
@@ -45,14 +41,13 @@ function generateMap() {
             map[row].push(ENTITIES.wall);
         }
     }
-    let tiles = 0;
-    let tries = 0;
     let x = Math.floor(COLS / 2);
     let y = Math.floor(ROWS / 2);
     for (let i = 0; i < MAP_GEN_ROUNDS; i++) {
         // ensure the next step does leave a n-wide border of walls
         let nextx = x;
         let nexty = y;
+        let tries = 0;
         do {
             tries++;
             // walk a random distance either in x or y direction
@@ -63,15 +58,12 @@ function generateMap() {
                 nexty = y + increment;
             }
 
-            // if we still need tiles, reset into the center to continue
+            // if we are stuck in a wall, reset to the center to continue
             if (tries > MAX_TRIES_COUNT) {
-                if (tiles < MINIMUM_TILES_AMOUNT) {
-                    console.log(`reset with ${x},${y}`);
-                    nextx = Math.floor(COLS / 2);
-                    nexty = Math.floor(ROWS / 2);
-                } else {
-                    return;
-                }
+                console.log(`reset with ${x},${y}`);
+                nextx = Math.floor(COLS / 2);
+                nexty = Math.floor(ROWS / 2);
+                tries = 0;
             }
         } while (nextx <= 2 || nextx >= COLS - 3 || nexty <= 2 || nexty >= ROWS - 3);
         x = nextx;
@@ -79,9 +71,7 @@ function generateMap() {
 
         if (map[y][x] !== ENTITIES.floor) {
             map[y][x] = ENTITIES.floor;
-            tiles++;
         }
-        tries = 0;
     }
 }
 
@@ -114,26 +104,7 @@ function areCoordsFree(x, y) {
     if (map[y][x] !== ENTITIES.floor) {
         return false;
     }
-    for (let i = 0; i < busyCoordinates.length; i++) {
-        try {
-            if (busyCoordinates[i].x === x && busyCoordinates[i].y === y) {
-                return false;
-            }
-        } catch (e) {
-            console.log("Error: " + e);
-        }
-    }
     return true;
-}
-
-// set the given coords as busy + the 8 neighbors
-// what are these used for? right now they are only used to check if there is space on the floor.
-// but since everything is also added to map[y][x], why is it needed?
-function addBusyCoords(x, y) {
-    busyCoordinates.push({
-        x: x,
-        y: y
-    });
 }
 
 function generateValidCoords() {
@@ -154,7 +125,6 @@ function generateValidCoords() {
 // and draw object with given color
 function addObjToMap(coords, identifier) {
     map[coords.y][coords.x] = identifier;
-    addBusyCoords(coords.x, coords.y);
 }
 
 function removeObjFromMap(x, y) {
@@ -197,7 +167,6 @@ function drawSquare(x, y, obj) {
 
     // put a sprite on top of it
     if (sprite !== undefined) {
-        console.log(`draw sprite @${x},${y}`);
         context.drawImage(sprite, x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
     }
 }

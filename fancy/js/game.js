@@ -3,6 +3,7 @@ startGame();
 function startGame() {
     generateMap();
     setTimeout(gameSetUp, 500);
+
     function gameSetUp() {
         generatePlayer();
         generateWeapon(STARTING_WEAPONS_AMOUNT);
@@ -21,7 +22,7 @@ function updateLegend() {
     document.getElementById("health").innerText = player.health;
     document.getElementById("weapon").innerText = player.weapon.name;
     document.getElementById("damage").innerText = player.weapon.damage;
-    document.getElementById("enemies").innerText = TOTAL_ENEMIES - defeatedEnemies;
+    document.getElementById("enemies").innerText = `${enemies.length}`;
 }
 
 function movePlayer(oldX, oldY, newX, newY) {
@@ -39,13 +40,14 @@ function movePlayer(oldX, oldY, newX, newY) {
         updateLegend();
         drawMapSegment(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, newX + VISIBILITY + 2, newY + VISIBILITY + 2);
     }
+
+    if (player.health > 0 && enemies.length === 0) {
+        userWins();
+    }
 }
 
-// Movement has to be fundamentally different if we want smooth movement (game loop)
-// not necessary right now, because updates are bound to the player moving
-
 // To get the proper keycode, see e.g. https://keycode.info/
-const KEYCODES = Object.freeze({ left: 37, up: 38, right: 39, down: 40})
+const KEYCODES = Object.freeze({left: 37, up: 38, right: 39, down: 40})
 
 document.addEventListener("keydown", function (e) {
     let newX = player.coords.x;
@@ -80,18 +82,18 @@ canvas.addEventListener("touchstart", function (e) {
     const oldX = player.coords.x;
     const oldY = player.coords.y;
 
-    if(e.touches) {
+    if (e.touches) {
         const touchX = Math.floor((e.touches[0].pageX - canvas.offsetLeft) / PIXEL_SIZE);
         const touchY = Math.floor((e.touches[0].pageY - canvas.offsetTop) / PIXEL_SIZE);
         const touchIsFurtherFromPlayerOnXThanYAxis = Math.abs(oldX - touchX) > Math.abs(oldY - touchY);
 
-        if(touchIsFurtherFromPlayerOnXThanYAxis) {
+        if (touchIsFurtherFromPlayerOnXThanYAxis) {
             // touch was to the right of player, i.e. player walks one step to the right
-            if(oldX - touchX < 0) {
+            if (oldX - touchX < 0) {
                 newX++;
             } else newX--; // touch was to the left of player
-        // touch was to below player, i.e. player walks one step down
-        } else if(oldY - touchY < 0) {
+            // touch was to below player, i.e. player walks one step down
+        } else if (oldY - touchY < 0) {
             newY++;
         } else newY--; // touch was above player
     }
@@ -105,9 +107,7 @@ canvas.addEventListener("touchend", function (e) {
 });
 
 function resetGame() {
-    defeatedEnemies = 0;
     enemies = [];
-    busyCoordinates = [];
     shadow = [];
     map = [];
 }
