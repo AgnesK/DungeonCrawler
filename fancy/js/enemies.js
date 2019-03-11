@@ -50,7 +50,7 @@ function enemyDefeated(enemy) {
         return;
     }
     removeObjFromMap(enemy.coords.x, enemy.coords.y);
-    drawMap(enemy.coords.x - 1, enemy.coords.y - 1, enemy.coords.x + 1, enemy.coords.y + 1);
+    drawMapSegment(enemy.coords.x - 1, enemy.coords.y - 1, enemy.coords.x + 1, enemy.coords.y + 1);
     enemies.slice(enemies.indexOf(enemy), 1);
     player.xp += 50;
     if (player.xp - 100 * (player.level - 1) >= 100) {

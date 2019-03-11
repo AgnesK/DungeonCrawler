@@ -3,14 +3,13 @@ startGame();
 function startGame() {
     generateMap();
     setTimeout(gameSetUp, 500);
-    // difficulty settings, the base game takes ages to complete
     function gameSetUp() {
         generatePlayer();
         generateWeapon(STARTING_WEAPONS_AMOUNT);
         generateEnemies(TOTAL_ENEMIES);
         generatePotions(STARTING_POTIONS_AMOUNT);
         generateShadow();
-        drawMap(0, 0, COLS, ROWS);
+        drawMapSegment(0, 0, COLS, ROWS);
         console.log(textMap(map), COLS, ROWS);
         updateLegend();
     }
@@ -38,7 +37,7 @@ function movePlayer(oldX, oldY, newX, newY) {
         }
         updatePlayerPosition(player.coords.x, player.coords.y, newX, newY);
         updateLegend();
-        drawMap(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, newX + VISIBILITY + 2, newY + VISIBILITY + 2);
+        drawMapSegment(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, newX + VISIBILITY + 2, newY + VISIBILITY + 2);
     }
 }
 

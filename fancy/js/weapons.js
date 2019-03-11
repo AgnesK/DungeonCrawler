@@ -20,9 +20,7 @@ function generateWeapon(amount) {
     for (let i = 0; i < amount; i++) {
         const coords = generateValidCoords();
         addObjToMap(coords, ENTITIES.weapon);
-        if (!isShadowToggled) {
-            drawObject(coords.x, coords.y, "orange");
-        }
+        drawMapSegment(coords.x, coords.y);
     }
 }
 

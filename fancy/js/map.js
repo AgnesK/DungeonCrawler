@@ -10,6 +10,7 @@ const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 // unclear what 'busy' means. seems to prevent coordinates from being picked (e.g. for spawning)
 // if at any time something was already on that spot. Even if the coords are now free/floor
 let busyCoordinates = [];
+const MAP_GEN_ROUNDS = 3000;
 const MAX_TRIES_COUNT = 1000;
 const MINIMUM_TILES_AMOUNT = 1000;
 
@@ -48,7 +49,7 @@ function generateMap() {
     let tries = 0;
     let x = Math.floor(COLS / 2);
     let y = Math.floor(ROWS / 2);
-    for (let i = 0; i < 30000; i++) {
+    for (let i = 0; i < MAP_GEN_ROUNDS; i++) {
         // ensure the next step does leave a n-wide border of walls
         let nextx = x;
         let nexty = y;
@@ -84,35 +85,26 @@ function generateMap() {
     }
 }
 
-function drawMap(startX, startY, endX, endY) {
-    let color;
+/** update a part (or all of) the map */
+function drawMapSegment(startX, startY, endX, endY) {
+    // if only called with 2 arguments, update square (y,x)
+    if (endX === undefined || endY === undefined) {
+        endX = startX + 1;
+        endY = startY + 1;
+    }
+
     for (let row = Math.max(0, startY); row < Math.min(ROWS, endY); row++) {
         for (let col = Math.max(0, startX); col < Math.min(COLS, endX); col++) {
             if (isShadowToggled && shadow[row][col] === 0) {
-                drawObject(col, row, "black");
+                drawColoredSquare(col, row, "black");
             } else {
                 switch (map[row][col]) {
-                    case ENTITIES.floor:
-                        color = "white";
-                        break;
                     case ENTITIES.player:
-                        color = "blue";
+                        drawSquare(col, row, player);
                         break;
-                    case ENTITIES.enemy:
-                        color = "red";
-                        break;
-                    case ENTITIES.potion:
-                        color = "lightgreen";
-                        break;
-                    case ENTITIES.weapon:
-                        color = "orange";
-                        break;
-                    case ENTITIES.wall:
                     default:
-                        color = "dimgrey";
+                        drawSquare(col, row, map[row][col]);
                 }
-
-                drawObject(col, row, color);
             }
         }
     }
@@ -165,22 +157,56 @@ function addObjToMap(coords, identifier) {
     addBusyCoords(coords.x, coords.y);
 }
 
-let img = new Image();
-img.src = 'assets/green_character.png';
+function removeObjFromMap(x, y) {
+    map[y][x] = ENTITIES.floor;
+}
 
-function drawObject(x, y, color) {
-    let colorn = color !== 'blue' ? color : 'white';
-    context.beginPath();
-    context.rect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
-    context.fillStyle = colorn;
-    context.fill();
-    if (color === 'blue') {
-        context.drawImage(img, x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+
+function drawSquare(x, y, obj) {
+    let color = undefined;
+    let sprite = undefined;
+    // what to draw
+    if (typeof obj === 'object' && 'sprite' in obj && obj.sprite !== undefined) {
+        color = 'white';
+        sprite = obj.sprite;
+    } else if (typeof obj === 'string') {
+        switch (obj) {
+            case ENTITIES.floor:
+                color = "white";
+                break;
+            case ENTITIES.player:
+                color = "blue";
+                break;
+            case ENTITIES.enemy:
+                color = "red";
+                break;
+            case ENTITIES.potion:
+                color = "lightgreen";
+                break;
+            case ENTITIES.weapon:
+                color = "orange";
+                break;
+            case ENTITIES.wall:
+            default:
+                color = "dimgrey";
+        }
+    }
+
+    // draw the square
+    drawColoredSquare(x, y, color);
+
+    // put a sprite on top of it
+    if (sprite !== undefined) {
+        console.log(`draw sprite @${x},${y}`);
+        context.drawImage(sprite, x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
     }
 }
 
-function removeObjFromMap(x, y) {
-    map[y][x] = ENTITIES.floor;
+function drawColoredSquare(x, y, color) {
+    context.beginPath();
+    context.rect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+    context.fillStyle = color;
+    context.fill();
 }
 
 // keep or unnecessary complexity?
@@ -203,5 +229,5 @@ function generateShadow() {
 
 function toggleShadow() {
     isShadowToggled = !isShadowToggled;
-    drawMap(0, 0, COLS, ROWS);
+    drawMapSegment(0, 0, COLS, ROWS);
 }

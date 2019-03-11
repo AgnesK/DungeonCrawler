@@ -7,6 +7,12 @@ class Player {
         this.weapon = weapon;
         this.coords = coords;
         this.xp = xp;
+
+        let img = new Image();
+        // the image will take a while to load, redraw the the square once that happens
+        img.onload = () => drawMapSegment(this.coords.x, this.coords.y);
+        img.src = 'assets/green_character.png';
+        this.sprite = img;
     }
 }
 

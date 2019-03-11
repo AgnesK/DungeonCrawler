@@ -5,9 +5,7 @@ function generatePotions(amount) {
     for (let i = 0; i < amount; i++) {
         const coords = generateValidCoords();
         addObjToMap(coords, ENTITIES.potion);
-        if (!isShadowToggled) {
-            drawObject(coords.x, coords.y, "lightgreen");
-        }
+        drawMapSegment(coords.x, coords.y);
     }
 }
 
