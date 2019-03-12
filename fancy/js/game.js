@@ -40,10 +40,6 @@ function movePlayer(oldX, oldY, newX, newY) {
         updateLegend();
         drawMapSegment(oldX - VISIBILITY - 1, oldY - VISIBILITY - 1, newX + VISIBILITY + 2, newY + VISIBILITY + 2);
     }
-
-    if (player.health > 0 && enemies.length === 0) {
-        userWins();
-    }
 }
 
 // To get the proper keycode, see e.g. https://keycode.info/

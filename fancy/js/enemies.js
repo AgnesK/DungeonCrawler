@@ -5,7 +5,7 @@ const TOTAL_ENEMIES = 5;
 let enemies = [];
 
 class Enemy {
-    constructor(health, coords, damage){
+    constructor(health, coords, damage) {
         this.coords = coords;
         this.health = health;
         this.damage = damage;
@@ -31,14 +31,16 @@ function fightEnemy(x, y) {
     const enemy = getEnemy(x, y);
     enemy.health -= player.weapon.damage;
     player.health -= enemy.damage;
-    if (player.health <= 0) {
-        // shouldn't this be in the main loop
-        gameOver();
-        return;
-    } else if (enemy.health <= 0) {
+    if (enemy.health <= 0) {
         enemyDefeated(enemy);
     }
     updateLegend();
+
+    if (player.health <= 0) {
+        gameOver();
+    } else if (player.health > 0 && enemies.length === 0) {
+        userWins();
+    }
 }
 
 function enemyDefeated(enemy) {
