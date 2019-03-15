@@ -1,0 +1,22 @@
+body {
+    text-align: center;
+}
+
+.container {
+    border: none;
+    outline: none;
+    position: relative;
+    text-align: center;
+}
+
+.container div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container img {
+    width: 100%;
+    height: auto;
+}
