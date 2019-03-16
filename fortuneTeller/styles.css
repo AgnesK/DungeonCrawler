@@ -11,12 +11,13 @@ body {
 
 .container div {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
 .container img {
     width: 100%;
+    max-width: 400px;
     height: auto;
 }
