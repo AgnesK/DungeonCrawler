@@ -6,7 +6,6 @@ function startGame() {
 
     function gameSetUp() {
         generatePlayer();
-        generateWeapon(STARTING_WEAPONS_AMOUNT);
         generateEnemies(TOTAL_ENEMIES);
         generatePotions(STARTING_POTIONS_AMOUNT);
         drawMapSegment(0, 0, COLS, ROWS);
@@ -54,8 +53,6 @@ function movePlayer(oldX, oldY, newX, newY) {
         // if next spot is potion
         if (map[newY][newX] === ENTITIES.potion) {
             drinkPotion(newX, newY);
-        } else if (map[newY][newX] === ENTITIES.weapon) {
-            takeWeapon(newX, newY);
         }
         updatePlayerPosition(player.coords.x, player.coords.y, newX, newY);
         updateLegend();

@@ -10,7 +10,7 @@ const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 const MAP_GEN_ROUNDS = 3000;
 const MAX_TRIES_COUNT = 10;
 
-const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'});
+const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', wall: '#', floor: '.'});
 
 function textMap(map) {
     let tmp = "";
@@ -132,9 +132,6 @@ function drawSquare(x, y, obj) {
             break;
         case ENTITIES.potion:
             color = "lightgreen";
-            break;
-        case ENTITIES.weapon:
-            color = "orange";
             break;
         case ENTITIES.wall:
         default:

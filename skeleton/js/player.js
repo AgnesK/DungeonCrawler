@@ -12,7 +12,7 @@ class Player {
 
 function generatePlayer() {
     const coords = generateValidCoords();
-    player = new Player(1, 100, WEAPONS[0], coords, 30);
+    player = new Player(1, 100, 15, coords, 30);
     addObjToMap(player.coords, ENTITIES.player);
 }
 
