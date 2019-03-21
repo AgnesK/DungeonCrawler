@@ -23,12 +23,12 @@ function getEnemy(x, y) {
 }
 
 // TODO: Exercise 4a
-// Make the player fight the enemy.
-// 1) Check which player is sitting on those coordinates x and y.
-// 2) Decrease the enemies health by the damage the players weapon deals.
-// 3) Decrease the players health by the damage the enemy deals.
-// 4) Check if the enemy is still alive. What should happen then?
-// 5) Check if the player might have won or lost the game.
+//  Make the player fight the enemy.
+//  1) Check which player is sitting on those coordinates x and y.
+//  2) Decrease the enemies health by the damage the players weapon deals.
+//  3) Decrease the players health by the damage the enemy deals.
+//  4) Check if the enemy is still alive. What should happen then?
+//  5) Check if the player might have won or lost the game.
 
 function fightEnemy(x, y) {
     const enemy = getEnemy(x, y);

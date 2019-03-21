@@ -12,7 +12,6 @@ class Enemy {
     }
 }
 
-// TODO function place enemy
 function generateEnemies(amount) {
     for (let i = 0; i < amount; i++) {
         const coords = generateValidCoords();

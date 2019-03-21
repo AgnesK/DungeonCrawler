@@ -6,6 +6,7 @@ Start with these, then you can pick any from the next section or work on your ow
 ### Exercise 0
 Estimate the tasks below, i.e. compare them with each other to see which ones seem easier or harder than other tasks.
 Then try to arrange them in categories (Mouse/easy - Dog/intermediate - Elephant/hard).
+If you don't know what a task means, try to clarify and define it with your team.
 
 ### Exercise 1
 Copy the skeleton folder and rename it to your team's name.
@@ -24,7 +25,7 @@ Make the player fight the enemy.
 Make the player heal when he drinks a potion.
 
 ## Additional Ideas
-* Create a nicer menu.
+* Create a nicer game menu and legend.
 * Add weapon upgrades.
 * Use images instead of rectangles for the player, enemies, ...
 * Let enemies spawn randomly.

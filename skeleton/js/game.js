@@ -85,7 +85,7 @@ document.addEventListener("keydown", function (e) {
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
-// TODO: Exercise 3b
+// TODO: Exercise 3c
 //  Reacting to touch on mobile devices:
 
 canvas.addEventListener("touchstart", function (e) {
