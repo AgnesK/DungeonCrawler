@@ -9,6 +9,10 @@ Based on https://codepen.io/anon/pen/vbVzar
 
 Some art taken from [dungeon-tileset made by Buch](https://opengameart.org/content/dungeon-tileset)
 
+### Exercises
+This repository is designed to help understand a bit of HTML and Javascript.
+You can go through the [Exercises](Exercises.md) to get familiar with the code.
+
 ### Local testing
 
 #### Desktop

@@ -18,7 +18,6 @@ function resetGame() {
 
 function userWins() {
     alert("YOU CONQUERED THE DUNGEON!");
-    // how could we make this more awesome
     resetGame();
     startGame();
 }
