@@ -2,13 +2,10 @@ let canvas = document.getElementById("grid");
 let context = canvas.getContext("2d");
 
 let map = [];
-let directions = [-1, 0, 1];
 
-const PIXEL_SIZE = 15;
+const PIXEL_SIZE = 30;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
-const MAP_GEN_ROUNDS = 3000;
-const MAX_TRIES_COUNT = 10;
 
 const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'});
 
@@ -24,7 +21,7 @@ function textMap(map) {
 }
 
 // replace with static map gen/allow switching
-function generateMap() {
+function generateMapAsRectangle() {
     if (COLS <= 5 || ROWS <= 5) {
         alert("The map is too small, can't generate a map");
         return
@@ -37,36 +34,10 @@ function generateMap() {
             map[row].push(ENTITIES.wall);
         }
     }
-    let x = Math.floor(COLS / 2);
-    let y = Math.floor(ROWS / 2);
-    for (let i = 0; i < MAP_GEN_ROUNDS; i++) {
-        // ensure the next step does leave a n-wide border of walls
-        let nextx = x;
-        let nexty = y;
-        let tries = 0;
-        do {
-            tries++;
-            // walk a random distance either in x or y direction
-            let increment = directions[Math.floor(Math.random() * directions.length)];
-            if (Math.random() < 0.5) {
-                nextx = x + increment;
-            } else {
-                nexty = y + increment;
-            }
-
-            // if we are stuck in a wall, reset to the center to continue
-            if (tries > MAX_TRIES_COUNT) {
-                console.log(`reset with ${x},${y}`);
-                nextx = Math.floor(COLS / 2);
-                nexty = Math.floor(ROWS / 2);
-                tries = 0;
-            }
-        } while (nextx <= 2 || nextx >= COLS - 3 || nexty <= 2 || nexty >= ROWS - 3);
-        x = nextx;
-        y = nexty;
-
-        if (map[y][x] !== ENTITIES.floor) {
-            map[y][x] = ENTITIES.floor;
+    // fill everything inside it with floor except a pixel wide border of walls
+    for (let row = 1; row < ROWS-1; row++) {
+        for (let col = 1; col < COLS-1; col++) {
+            map[row][col] = ENTITIES.floor
         }
     }
 }
@@ -116,7 +87,6 @@ function addObjToMap(coords, identifier) {
 function removeObjFromMap(x, y) {
     map[y][x] = ENTITIES.floor;
 }
-
 
 function drawSquare(x, y, obj) {
     let color = undefined;

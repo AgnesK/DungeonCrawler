@@ -1,7 +1,7 @@
 startGame();
 
 function startGame() {
-    generateMap();
+    generateMapAsRectangle();
     setTimeout(gameSetUp, 500);
 
     function gameSetUp() {
