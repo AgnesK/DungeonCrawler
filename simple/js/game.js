@@ -1,18 +1,9 @@
 startGame();
 
 function startGame() {
-    generateMapAsRectangle();
-    setTimeout(gameSetUp, 500);
-
-    function gameSetUp() {
-        generatePlayer();
-        generateWeapon(STARTING_WEAPONS_AMOUNT);
-        generateEnemies(TOTAL_ENEMIES);
-        generatePotions(STARTING_POTIONS_AMOUNT);
-        drawMapSegment(0, 0, COLS, ROWS);
-        console.log(textMap(map), COLS, ROWS);
-        updateLegend();
-    }
+    generateMap();
+    drawMapSegment(0, 0, COLS, ROWS);
+    updateLegend();
 }
 
 function updateLegend() {

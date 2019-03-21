@@ -9,35 +9,72 @@ const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
 
 const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', weapon: 'W', wall: '#', floor: '.'});
 
-function textMap(map) {
-    let tmp = "";
-    for (let row of map) {
-        for (let col of row) {
-            tmp += col
-        }
-        tmp += '\n'
-    }
-    return tmp
+const level1 = [
+    "##########################",
+    "#........................#",
+    "#........................#",
+    "#..........W.........E...#",
+    "#........................#",
+    "#......................E.#",
+    "#........................#",
+    "#.p......................#",
+    "#........................#",
+    "#........................#",
+    "#..........P.......W.....#",
+    "#........................#",
+    "#........................#",
+    "#.........E.......E..p...#",
+    "#.....................W..#",
+    "#....................p...#",
+    "#........................#",
+    "#..................E.....#",
+    "#.p......................#",
+    "##########################"
+];
+
+function generateMap() {
+    generateMapFromText(level1);
 }
 
-// replace with static map gen/allow switching
-function generateMapAsRectangle() {
-    if (COLS <= 5 || ROWS <= 5) {
-        alert("The map is too small, can't generate a map");
+function generateMapFromText(level) {
+    // Check if textMap has same size as ROW/COLS
+    if (ROWS !== level.length || COLS !== level[0].length) {
+        alert("The text map doesn't have the right size, can't generate a map");
         return
     }
 
-    // fill the whole map with walls
-    for (let row = 0; row < ROWS; row++) {
+    // Generate Player, Enemies, Potions and Weapon Upgrades
+    for (let row = 0; row < level.length; row++) {
         map.push([]);
-        for (let col = 0; col < COLS; col++) {
-            map[row].push(ENTITIES.wall);
-        }
-    }
-    // fill everything inside it with floor except a pixel wide border of walls
-    for (let row = 1; row < ROWS-1; row++) {
-        for (let col = 1; col < COLS-1; col++) {
-            map[row][col] = ENTITIES.floor
+        for (let col = 0; col < level[0].length; col++) {
+            map[row][col] = (level[row].charAt(col));
+            switch (level[row].charAt(col)) {
+                case ENTITIES.player:
+                    generatePlayer({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                case ENTITIES.enemy:
+                    generateEnemy({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                case ENTITIES.potion:
+                    generatePotions({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                case ENTITIES.weapon:
+                    generateWeapon({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                default:
+            }
         }
     }
 }
