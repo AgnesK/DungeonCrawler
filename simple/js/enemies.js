@@ -12,7 +12,6 @@ class Enemy {
     }
 }
 
-// TODO function place enemy
 function generateEnemies(amount) {
     for (let i = 0; i < amount; i++) {
         const coords = generateValidCoords();
@@ -29,7 +28,7 @@ function getEnemy(x, y) {
 
 function fightEnemy(x, y) {
     const enemy = getEnemy(x, y);
-    enemy.health -= player.weapon.damage;
+    enemy.health -= player.weapon;
     player.health -= enemy.damage;
     if (enemy.health <= 0) {
         enemyDefeated(enemy);

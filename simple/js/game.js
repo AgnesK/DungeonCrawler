@@ -17,6 +17,7 @@ function startGame() {
 
 function updateLegend() {
     document.getElementById("health").innerText = player.health;
+    document.getElementById("damage").innerText = player.weapon;
     document.getElementById("enemies").innerText = `${enemies.length}`;
 }
 

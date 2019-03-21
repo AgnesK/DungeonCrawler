@@ -1,19 +1,4 @@
-const WEAPONS = [{
-    name: "Knife",
-    damage: 15
-},
-    {
-        name: "Gun",
-        damage: 30
-    },
-    {
-        name: "Bazooka",
-        damage: 60
-    },
-    {
-        name: "Atomic Bomb",
-        damage: 100
-    }];
+const WEAPONS = [15, 15, 15, 30, 30, 60, 100];
 const STARTING_WEAPONS_AMOUNT = 3;
 
 function generateWeapon(amount) {
@@ -25,7 +10,7 @@ function generateWeapon(amount) {
 }
 
 function takeWeapon(x, y) {
-    player.weapon = WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
+    player.weapon += WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
     removeObjFromMap(x, y);
     generateWeapon(1);
 }
