@@ -14,8 +14,8 @@
 - simplify and make more
 
 to remove:
-- map gen
-- shadow
+- map gen (Done)
+- shadow (Done)
 
 start:
 FS (Done): landing page for forking into team pages (subdir for different versions)
