@@ -2,71 +2,73 @@ let canvas = document.getElementById("grid");
 let context = canvas.getContext("2d");
 
 let map = [];
-let directions = [-1, 0, 1];
 
-const PIXEL_SIZE = 15;
+const PIXEL_SIZE = 30;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
-const MAP_GEN_ROUNDS = 3000;
-const MAX_TRIES_COUNT = 10;
 
 const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', wall: '#', floor: '.'});
 
-function textMap(map) {
-    let tmp = "";
-    for (let row of map) {
-        for (let col of row) {
-            tmp += col
-        }
-        tmp += '\n'
-    }
-    return tmp
+const level1 = [
+    "##########################",
+    "#........................#",
+    "#........................#",
+    "#....................E...#",
+    "#........................#",
+    "#......................E.#",
+    "#........................#",
+    "#.p......................#",
+    "#........................#",
+    "#........................#",
+    "#..........P.............#",
+    "#........................#",
+    "#........................#",
+    "#.........E.......E..p...#",
+    "#........................#",
+    "#....................p...#",
+    "#........................#",
+    "#..................E.....#",
+    "#.p......................#",
+    "##########################"
+];
+
+function generateMap() {
+    generateMapFromText(level1);
 }
 
-// replace with static map gen/allow switching
-function generateMap() {
-    if (COLS <= 5 || ROWS <= 5) {
-        alert("The map is too small, can't generate a map");
+function generateMapFromText(level) {
+    // Check if textMap has same size as ROW/COLS
+    if (ROWS !== level.length || COLS !== level[0].length) {
+        alert("The text map doesn't have the right size, can't generate a map");
         return
     }
 
-    // fill the whole map with walls
-    for (let row = 0; row < ROWS; row++) {
+    // Generate Player, Enemies, Potions and Weapon Upgrades
+    for (let row = 0; row < level.length; row++) {
         map.push([]);
-        for (let col = 0; col < COLS; col++) {
-            map[row].push(ENTITIES.wall);
-        }
-    }
-    let x = Math.floor(COLS / 2);
-    let y = Math.floor(ROWS / 2);
-    for (let i = 0; i < MAP_GEN_ROUNDS; i++) {
-        // ensure the next step does leave a n-wide border of walls
-        let nextx = x;
-        let nexty = y;
-        let tries = 0;
-        do {
-            tries++;
-            // walk a random distance either in x or y direction
-            let increment = directions[Math.floor(Math.random() * directions.length)];
-            if (Math.random() < 0.5) {
-                nextx = x + increment;
-            } else {
-                nexty = y + increment;
+        for (let col = 0; col < level[0].length; col++) {
+            map[row][col] = (level[row].charAt(col));
+            switch (level[row].charAt(col)) {
+                case ENTITIES.player:
+                    generatePlayer({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                case ENTITIES.enemy:
+                    generateEnemy({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                case ENTITIES.potion:
+                    generatePotion({
+                        x: col,
+                        y: row
+                    });
+                    break;
+                default:
             }
-
-            // if we are stuck in a wall, reset to the center to continue
-            if (tries > MAX_TRIES_COUNT) {
-                console.log(`reset with ${x},${y}`);
-                nextx = Math.floor(COLS / 2);
-                nexty = Math.floor(ROWS / 2);
-                tries = 0;
-            }
-        } while (nextx <= 2 || nextx >= COLS - 3 || nexty <= 2 || nexty >= ROWS - 3);
-        x = nextx;
-        y = nexty;
-
-        if (map[y][x] !== ENTITIES.floor) {
-            map[y][x] = ENTITIES.floor;
         }
     }
 }
@@ -116,7 +118,6 @@ function addObjToMap(coords, identifier) {
 function removeObjFromMap(x, y) {
     map[y][x] = ENTITIES.floor;
 }
-
 
 function drawSquare(x, y, obj) {
     let color = undefined;

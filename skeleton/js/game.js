@@ -2,16 +2,8 @@ startGame();
 
 function startGame() {
     generateMap();
-    setTimeout(gameSetUp, 500);
-
-    function gameSetUp() {
-        generatePlayer();
-        generateEnemies(TOTAL_ENEMIES);
-        generatePotions(STARTING_POTIONS_AMOUNT);
-        drawMapSegment(0, 0, COLS, ROWS);
-        console.log(textMap(map), COLS, ROWS);
-        updateLegend();
-    }
+    drawMapSegment(0, 0, COLS, ROWS);
+    updateLegend();
 }
 
 function updateLegend() {

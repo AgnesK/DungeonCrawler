@@ -10,8 +10,7 @@ class Player {
     }
 }
 
-function generatePlayer() {
-    const coords = generateValidCoords();
+function generatePlayer(coords) {
     player = new Player(1, 100, 15, coords, 30);
     addObjToMap(player.coords, ENTITIES.player);
 }

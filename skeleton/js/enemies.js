@@ -1,6 +1,5 @@
 const ENEMIES_HEALTH = [30, 30, 30, 30, 40, 40, 60, 80];
 const ENEMIES_DAMAGE = [30, 30, 30, 30, 40, 40, 60, 80];
-const TOTAL_ENEMIES = 5;
 
 let enemies = [];
 
@@ -12,12 +11,9 @@ class Enemy {
     }
 }
 
-function generateEnemies(amount) {
-    for (let i = 0; i < amount; i++) {
-        const coords = generateValidCoords();
-        enemies.push(new Enemy(ENEMIES_HEALTH[Math.floor(Math.random() * ENEMIES_HEALTH.length)], coords, ENEMIES_DAMAGE[Math.floor(Math.random() * ENEMIES_DAMAGE.length)]));
-        addObjToMap(coords, ENTITIES.enemy);
-    }
+function generateEnemy(coords) {
+    enemies.push(new Enemy(ENEMIES_HEALTH[Math.floor(Math.random() * ENEMIES_HEALTH.length)], coords, ENEMIES_DAMAGE[Math.floor(Math.random() * ENEMIES_DAMAGE.length)]));
+    addObjToMap(coords, ENTITIES.enemy);
 }
 
 function getEnemy(x, y) {

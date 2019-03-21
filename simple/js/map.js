@@ -62,7 +62,7 @@ function generateMapFromText(level) {
                     });
                     break;
                 case ENTITIES.potion:
-                    generatePotions({
+                    generatePotion({
                         x: col,
                         y: row
                     });
