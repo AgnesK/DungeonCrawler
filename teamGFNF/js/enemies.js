@@ -58,3 +58,18 @@ function enemyDefeated(enemy) {
     }
     updateLegend();
 }
+function moveEnemies() {
+    for(let i = 0; i< enemies.length; i++){
+        let enemy = enemies[i]
+        let richtung = Math.floor(Math.random()*3)-1
+        updateEnemyPosition(enemy,enemy.coords.x+richtung, enemy.coords.y)
+    }
+}
+
+function updateEnemyPosition(enemy, newX, newY) {
+    if (map[newY][newX] === ENTITIES.floor) {
+        removeObjFromMap(enemy.coords.x, enemy.coords.y);
+        map[newY][newX] = ENTITIES.enemy;
+        enemy.coords = {x: newX, y: newY};
+    }
+}

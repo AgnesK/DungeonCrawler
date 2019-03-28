@@ -14,6 +14,7 @@ function updateLegend() {
 function resetGame() {
     enemies = [];
     map = [];
+    player.maps = 0;
 }
 
 function userWins() {
@@ -45,9 +46,25 @@ function movePlayer(oldX, oldY, newX, newY) {
         if (map[newY][newX] === ENTITIES.potion) {
             drinkPotion(newX, newY);
         }
+        if (map[newY][newX] === ENTITIES.teleporter){
+            newX = player.coords.x
+            newY = player.coords.y + 10
+            if (newY >= ROWS-2) {
+                newY = newY - 15
+            }
+            // let coords = generateValidCoords()
+            // newX = coords.x
+            // newY = coords.y
+        }
+        if (map[newY][newX] === ENTITIES.kiste){
+            player.maps++
+        }
         updatePlayerPosition(player.coords.x, player.coords.y, newX, newY);
         updateLegend();
-        drawMapSegment(oldX - 1, oldY - 1, newX + 2, newY + 2);
+        drawMapSegment(0, 0, COLS, ROWS);
+    }
+    if(player.maps === MAPS){
+        userWins()
     }
 }
 
@@ -81,6 +98,7 @@ document.addEventListener("keydown", function (e) {
     }
 
     movePlayer(oldX, oldY, newX, newY);
+    moveEnemies()
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 

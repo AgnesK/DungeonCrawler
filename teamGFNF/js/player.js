@@ -7,6 +7,7 @@ class Player {
         this.weapon = weapon;
         this.coords = coords;
         this.xp = xp;
+        this.maps = 0
     }
 }
 

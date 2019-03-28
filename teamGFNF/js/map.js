@@ -6,29 +6,30 @@ let map = [];
 const PIXEL_SIZE = 30;
 const COLS = Math.floor(canvas.width / PIXEL_SIZE);
 const ROWS = Math.floor(canvas.height / PIXEL_SIZE);
+let MAPS = 0;
 
-const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', wall: '#', floor: '.'});
+const ENTITIES = Object.freeze({enemy: 'E', player: 'P', potion: 'p', wall: '#', floor: '.', teleporter: 'T', kiste: 'K'});
 
 const level1 = [
     "##########################",
     "#........................#",
-    "#........................#",
+    "#.......p................#",
     "#....................E...#",
-    "#........................#",
+    "#...K....................#",
     "#......................E.#",
-    "#........................#",
-    "#.p......................#",
-    "#........................#",
+    "#..........EEE...........#",
+    "#.p........E.E..T........#",
+    "#..........EEE.......p...#",
     "#........................#",
     "#..........P.............#",
     "#........................#",
     "#........................#",
     "#.........E.......E..p...#",
-    "#........................#",
-    "#............#.......p...#",
-    "#............#...........#",
-    "#..................E.....#",
-    "#.p......................#",
+    "#............#############",
+    "#....p.......#...E...p...#",
+    "#............#.K........T#",
+    "#............##..........#",
+    "#.p..........####........#",
     "##########################"
 ];
 
@@ -66,6 +67,9 @@ function generateMapFromText(level) {
                         x: col,
                         y: row
                     });
+                    break;
+                case ENTITIES.kiste:
+                    MAPS++;
                     break;
                 default:
             }
@@ -126,14 +130,20 @@ function drawSquare(x, y, obj) {
             color = "white";
             break;
         case ENTITIES.player:
-            color = "blue";
+            color = "pink";
             break;
         case ENTITIES.enemy:
-            color = "red";
+            color = "maroon";
             break;
         case ENTITIES.potion:
-            color = "lightgreen";
+            color = "aquamarine";
             break;
+        case ENTITIES.teleporter:
+            color = "lightblue"
+            break
+        case ENTITIES.kiste:
+            color = "chocolate"
+            break
         case ENTITIES.wall:
         default:
             color = "dimgrey";
