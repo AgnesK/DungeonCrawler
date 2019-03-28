@@ -14,7 +14,6 @@ function updateLegend() {
 function resetGame() {
     enemies = [];
     map = [];
-    player.maps = 0;
 }
 
 function userWins() {
