@@ -6,9 +6,10 @@ function generatePotion(coords) {
 }
 
 function drinkPotion(x, y) {
-    // TODO: Exercise 5
-    //  Make the player heal when he drinks a potion.
-    //  1) Increase players health by the amount the potion heals.
-    //  2) Remove the empty potion from the map.
-    //  3) Add a new potion to the map.
+
+    player.health = player.health + 15
+    removeObjFromMap(x, y)
+    let coords = generateValidCoords()
+    generatePotion(coords)
+    // TODO: generiere potions nach einer Zeit
 }

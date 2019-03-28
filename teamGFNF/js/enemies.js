@@ -30,6 +30,20 @@ function fightEnemy(x, y) {
     //  3) Decrease the players health by the damage the enemy deals.
     //  4) Check if the enemy is still alive. What should happen then? Have a look at the function enemyDefeated.
     //  5) Check if the player might have won or lost the game.
+    let enemy = getEnemy(x, y)
+    enemy.health = enemy.health - player.weapon
+    if (enemy.health <= 0) {
+        enemyDefeated(enemy)
+    }
+    else {
+        player.health = player.health - enemy.damage
+        if (player.health <= 0) {
+            gameOver()
+        }
+    }
+    if (enemies.length === 0) {
+        userWins()
+    }
 }
 
 // TODO: Exercise 4b
