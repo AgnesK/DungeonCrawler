@@ -121,26 +121,45 @@ function removeObjFromMap(x, y) {
 
 function drawSquare(x, y, obj) {
     let color = undefined;
+    let sprite = undefined;
     switch (obj) {
         case ENTITIES.floor:
             color = "white";
             break;
         case ENTITIES.player:
             color = "blue";
+            drawColoredSquare(x, y,"white")
+            sprite = new Image();
+            sprite.onload=()=>drawMapSegment(x,y)
+            sprite.src = "assets/player.png";
+            drawWithSprite(x, y, sprite);
             break;
         case ENTITIES.enemy:
             color = "red";
+            drawColoredSquare(x, y,"white")
+            sprite=new Image()
+            sprite.onload=()=>drawMapSegment(x,y)
+            sprite.src="assets/enemy.png"
+            drawWithSprite(x,y, sprite)
             break;
         case ENTITIES.potion:
             color = "lightgreen";
+            drawColoredSquare(x, y,"white")
+            sprite=new Image()
+            sprite.onload=()=>drawMapSegment(x,y)
+            sprite.src="assets/potions.png"
+            drawWithSprite(x,y, sprite)
+
             break;
         case ENTITIES.wall:
         default:
             color = "dimgrey";
     }
 
-    // draw the square
-    drawColoredSquare(x, y, color);
+    if (sprite === undefined) {
+        // draw the square
+        drawColoredSquare(x, y, color);
+    }
 }
 
 function drawColoredSquare(x, y, color) {
@@ -148,4 +167,8 @@ function drawColoredSquare(x, y, color) {
     context.rect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
     context.fillStyle = color;
     context.fill();
+}
+
+function drawWithSprite(x, y, sprite) {
+    context.drawImage(sprite, x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
 }
