@@ -26,10 +26,23 @@ function fightEnemy(x, y) {
     // TODO: Exercise 4a
     //  Make the player fight the enemy.
     //  1) Check which player is sitting on those coordinates x and y.
+    const enemy = getEnemy(x, y)
     //  2) Decrease the enemies health by the damage the players weapon deals.
+    enemy.health = enemy.health - player.weapon
     //  3) Decrease the players health by the damage the enemy deals.
+    player.health = player.health - enemy.damage
     //  4) Check if the enemy is still alive. What should happen then? Have a look at the function enemyDefeated.
+    if (enemy.health <= 0) {
+        enemyDefeated(enemy)
+    }
     //  5) Check if the player might have won or lost the game.
+    if (player.health <= 0) {
+        gameOver()
+    }
+    if (enemies.length == 0) {
+        userWins()
+    }
+    updateLegend()
 }
 
 // TODO: Exercise 4b

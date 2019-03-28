@@ -9,6 +9,7 @@ function drinkPotion(x, y) {
     // TODO: Exercise 5
     //  Make the player heal when he drinks a potion.
     //  1) Increase players health by the amount the potion heals.
+    player.health = player.health + POTIONS[Math.floor(Math.random()*5)]
     //  2) Remove the empty potion from the map.
-    //  3) Add a new potion to the map.
+    removeObjFromMap(x, y)
 }
