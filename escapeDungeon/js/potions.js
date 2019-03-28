@@ -10,6 +10,8 @@ function drinkPotion(x, y) {
     //  Make the player heal when he drinks a potion.
     //  1) Increase players health by the amount the potion heals.
     player.health = player.health + POTIONS[Math.floor(Math.random()*5)]
+    document.getElementById('drinkingsounds').play();
+
     //  2) Remove the empty potion from the map.
     removeObjFromMap(x, y)
 }
