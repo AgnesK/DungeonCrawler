@@ -39,6 +39,7 @@ function generateMap() {
 
 function generateMapFromText(level) {
     // Check if textMap has same size as ROW/COLS
+    MAPS = 0
     if (ROWS !== level.length || COLS !== level[0].length) {
         alert("The text map doesn't have the right size, can't generate a map");
         return
